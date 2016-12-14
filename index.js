@@ -1,4 +1,3 @@
-'user strict';
 const express = require('express');
 const graphqlHttp = require('express-graphql');
 const {
@@ -9,7 +8,7 @@ const {
   GraphQLID
  } = require('graphql');
 
- const { getPokemonByNumber } = require('./src/resolvers/pokemon');
+const { getPokemonByNumber } = require('./src/resolvers/pokemon');
 
 const PORT = process.env.PORT || 3000;
 const server = express();
@@ -24,19 +23,19 @@ const pokemonType = new GraphQLObjectType({
     },
     name: {
       type: GraphQLString,
-      description: "the pokemon name"
+      description: 'the pokemon name'
     },
     type: {
       type: GraphQLString,
-      description: "the pokemon type"
+      description: 'the pokemon type'
     },
     attack: {
       type: GraphQLInt,
-      description: "the pokemon base attack value"
+      description: 'the pokemon base attack value'
     },
     defense: {
       type: GraphQLInt,
-      description: "the pokemon base defense value"
+      description: 'the pokemon base defense value'
     }
   }
 });
@@ -50,7 +49,7 @@ const queryType = new GraphQLObjectType({
       args: {
         number: {
           type: GraphQLID,
-          description: "the pokemon number"
+          description: 'the pokemon number'
         }
       },
       resolve: (_, args) => {

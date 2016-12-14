@@ -1,5 +1,3 @@
-'use strict';
-
 const pokemons = require('../data/pokemon.json');
 
 const getPokemonByNumber = (number) => new Promise((resolve) => {
