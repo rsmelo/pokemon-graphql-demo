@@ -1,0 +1,11 @@
+{
+  "name": "pokemon-graphql-demo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/rsmelo/pokemon-graphql-demo.git",
+  "author": "rsmelo <rodrigosm87@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "graphql": "^0.8.2"
+  }
+}
