@@ -1,6 +1,10 @@
 'user strict';
-
+const express = require('express');
+const graphqlHttp = require('express-graphql');
 const { graphql, buildSchema } = require('graphql');
+
+const PORT = process.env.PORT || 3000;
+const server = express();
 
 const schema = buildSchema(`
   type Pokemon {
@@ -49,18 +53,12 @@ const resolvers = {
   pokemons: () => pokemons
 };
 
-const query = `
-  query myFistQuery {
-    pokemons {
-      id
-      name
-      type
-      attack
-      defense
-    }
-  }
-`;
+server.use('/graphql', graphqlHttp({
+  schema,
+  graphiql: true,
+  rootValue: resolvers
+}));
 
-graphql(schema, query, resolvers)
-  .then((result) => console.log(result))
-  .catch((error) => console.log(error));
+server.listen(PORT, () => {
+  console.log(`Listening on http://localhost:${PORT}`);
+});
