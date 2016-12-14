@@ -9,6 +9,8 @@ const {
   GraphQLID
  } = require('graphql');
 
+ const { getPokemonByNumber } = require('./src/resolvers/pokemon');
+
 const PORT = process.env.PORT || 3000;
 const server = express();
 
@@ -16,7 +18,7 @@ const pokemonType = new GraphQLObjectType({
   name: 'Pokemon',
   description: 'A pocket monster',
   fields: {
-    id: {
+    number: {
       type: GraphQLID,
       description: 'the pokemon number'
     },
@@ -45,15 +47,15 @@ const queryType = new GraphQLObjectType({
   fields: {
     pokemon: {
       type: pokemonType,
-      resolve: () => new Promise((resolve) =>  {
-        resolve({
-          id: 2,
-          name: 'Ivysaur',
-          type: 'grass',
-          attack: 62,
-          defense: 63
-        });
-      })
+      args: {
+        number: {
+          type: GraphQLID,
+          description: "the pokemon number"
+        }
+      },
+      resolve: (_, args) => {
+        return getPokemonByNumber(args.number);
+      }
     }
   }
 });
@@ -62,38 +64,9 @@ const schema = new GraphQLSchema({
   query: queryType
 });
 
-const pokemons = [
-  {
-    id: 1,
-    name: 'Bulbasaur',
-    type: 'grass',
-    attack: 49,
-    defense: 49
-  },
-  {
-    id: 2,
-    name: 'Ivysaur',
-    type: 'grass',
-    attack: 62,
-    defense: 63
-  }
-];
-
-const resolvers = {
-  pokemon: () => ({
-    id: 1,
-    name: 'Bulbasaur',
-    type: 'grass',
-    attack: 49,
-    defense: 49
-  }),
-  pokemons: () => pokemons
-};
-
 server.use('/graphql', graphqlHttp({
   schema,
-  graphiql: true,
-  rootValue: resolvers
+  graphiql: true
 }));
 
 server.listen(PORT, () => {
