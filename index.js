@@ -12,13 +12,31 @@ const schema = buildSchema(`
   }
 
   type Query {
-    pokemon: Pokemon
+    pokemon: Pokemon,
+    pokemons: [Pokemon]
   }
 
   type Schema {
     query: Query
   }
 `);
+
+const pokemons = [
+  {
+    id: 1,
+    name: 'Bulbasaur',
+    type: 'grass',
+    attack: 49,
+    defense: 49
+  },
+  {
+    id: 2,
+    name: 'Ivysaur',
+    type: 'grass',
+    attack: 62,
+    defense: 63
+  }
+];
 
 const resolvers = {
   pokemon: () => ({
@@ -27,12 +45,13 @@ const resolvers = {
     type: 'grass',
     attack: 49,
     defense: 49
-  })
+  }),
+  pokemons: () => pokemons
 };
 
 const query = `
   query myFistQuery {
-    pokemon {
+    pokemons {
       id
       name
       type
