@@ -5,10 +5,12 @@ const {
   GraphQLObjectType,
   GraphQLString,
   GraphQLInt,
-  GraphQLID
+  GraphQLID,
+  GraphQLNonNull,
+  GraphQLList
  } = require('graphql');
 
-const { getPokemonByNumber } = require('./src/resolvers/pokemon');
+const { getPokemonByNumber, getPokemons } = require('./src/resolvers/pokemon');
 
 const PORT = process.env.PORT || 3000;
 const server = express();
@@ -44,11 +46,15 @@ const queryType = new GraphQLObjectType({
   name: 'QueryType',
   description: 'The root query type.',
   fields: {
+    pokemons: {
+      type: new GraphQLList(pokemonType),
+      resolve: getPokemons
+    },
     pokemon: {
       type: pokemonType,
       args: {
         number: {
-          type: GraphQLID,
+          type: new GraphQLNonNull(GraphQLID),
           description: 'the pokemon number'
         }
       },
