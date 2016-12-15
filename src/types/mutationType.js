@@ -1,11 +1,10 @@
 const {
   GraphQLObjectType,
-  GraphQLInt,
   GraphQLNonNull,
-  GraphQLString
  } = require('graphql');
 
 const pokemonType = require('./pokemonType');
+const pokemonInputType = require('./pokemonInputType');
 const { createPokemon } = require('../resolvers/pokemon');
 
 const mutationType = new GraphQLObjectType({
@@ -15,25 +14,12 @@ const mutationType = new GraphQLObjectType({
     createPokemon: {
       type: pokemonType,
       args: {
-        name: {
-          type: new GraphQLNonNull(GraphQLString),
-          description: 'the pokemon name'
-        },
-        type: {
-          type: new GraphQLNonNull(GraphQLString),
-          description: 'the pokemon type'
-        },
-        attack: {
-          type: new GraphQLNonNull(GraphQLInt),
-          description: 'the pokemon base attack value'
-        },
-        defense: {
-          type: new GraphQLNonNull(GraphQLInt),
-          description: 'the pokemon base defense value'
+        pokemon: {
+          type: new GraphQLNonNull(pokemonInputType)
         }
       },
       resolve: (_, args) => {
-        return createPokemon(args);
+        return createPokemon(args.pokemon);
       }
     }
   }
